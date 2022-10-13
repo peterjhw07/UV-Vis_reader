@@ -135,6 +135,6 @@ if __name__ == "__main__":
     exportpath = r'C:\Users\Peter\Documents\Postdoctorate\Work\CAKE\Case studies\UV-Vis Enzyme Catalysis\UV-Vis\21040701_330-3502.xlsx'  # enter Excel path for export
 
     fig = plot_spec(dir)
-    # arr_res = integral_calc(dir, region_limits)
-    # fig = plot_integral(arr_res)
-    # spec_export(arr_res, region_limits, exportpath)
+    arr_res = integral_calc(dir, region_limits)
+    fig = plot_integral(arr_res)
+    spec_export(arr_res, region_limits, exportpath)
