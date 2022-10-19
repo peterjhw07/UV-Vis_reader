@@ -111,8 +111,8 @@ while True:
             if values["-FS-"] != '': start = int(values["-FS-"])
             if values["-SI-"] != '': inc = int(values["-SI-"])
             if values["-LB1-"] != '' or values["-LB1-"] != '': x_range = tuple([float(values["-LB1-"]), float(values["-UB1-"])])
-            if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
             fig = UV_Vis_reader.plot_spec(folder, x_range=x_range, start=start, inc=inc, t_adj=t_adj)
+            if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
             fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
         except:
             if not folder:
@@ -125,16 +125,16 @@ while True:
             region_limits = [tuple([float(values["-LB2-"]), float(values["-UB2-"])])]
             arr_res = UV_Vis_reader.integral_calc(folder, region_limits, t_adj=t_adj)
             UV_Vis_reader.spec_export(arr_res, region_limits, exportpath)
-            if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
             fig = UV_Vis_reader.plot_integral(arr_res, t_unit=t_unit)
+            if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
             fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
         except:
             try:
                 region_limits = [tuple([float(values["-LB2-"]), float(values["-UB2-"])])]
                 try:
                     arr_res = UV_Vis_reader.integral_calc(folder, region_limits, t_adj=t_adj)
-                    if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
                     fig = UV_Vis_reader.plot_integral(arr_res, t_unit=t_unit)
+                    if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
                     fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
                 except:
                     if not folder:
