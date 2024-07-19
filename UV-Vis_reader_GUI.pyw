@@ -49,7 +49,11 @@ file_list_column = [
         sg.InputText(size=(5, 1), key="-UB1-"),
     ],
     [sg.Button('Submit/Update', key="-SUBMIT1-")],
-    [sg.Text("Calculate integrals and export", font=("Arial", 12, ' underline'))],
+    [sg.Text("Get temporal data and export", font=("Arial", 12, ' underline'))],
+    [
+        sg.Text("Maximum wavelength"),
+        sg.InputText(size=(5, 1), key="-MW-"),
+    ],
     [
         sg.Text("Lower range limit"),
         sg.InputText(size=(5, 1), key="-LB2-"),
@@ -122,18 +126,26 @@ while True:
 
     elif event == "-SUBMIT2-":
         try:
+            max_wavelengths = [float(values["-MW-"])]
+        except:
+            max_wavelengths = []
+        try:
             region_limits = [tuple([float(values["-LB2-"]), float(values["-UB2-"])])]
-            arr_res = UV_Vis_reader.integral_calc(folder, region_limits, t_adj=t_adj)
-            UV_Vis_reader.spec_export(arr_res, region_limits, exportpath)
-            fig = UV_Vis_reader.plot_integral(arr_res, t_unit=t_unit)
+        except:
+            region_limits = []
+        try:
+            df = UV_Vis_reader.get_temporal(folder, max_wavelengths=max_wavelengths, region_limits=region_limits,
+                                            t_adj=t_adj, t_unit=t_unit)
+            UV_Vis_reader.spec_export(df, exportpath)
+            fig = UV_Vis_reader.plot_temporal(df)
             if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
             fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
         except:
             try:
-                region_limits = [tuple([float(values["-LB2-"]), float(values["-UB2-"])])]
                 try:
-                    arr_res = UV_Vis_reader.integral_calc(folder, region_limits, t_adj=t_adj)
-                    fig = UV_Vis_reader.plot_integral(arr_res, t_unit=t_unit)
+                    df = UV_Vis_reader.get_temporal(folder, max_wavelengths=max_wavelengths,
+                                                    region_limits=region_limits, t_adj=t_adj, t_unit=t_unit)
+                    fig = UV_Vis_reader.plot_temporal(df)
                     if fig_canvas_agg: fig_canvas_agg.get_tk_widget().forget()
                     fig_canvas_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
                 except:
@@ -144,8 +156,8 @@ while True:
             except:
                 if not folder:
                     sg.Popup('Select data folder')
-                elif not region_limits:
-                    sg.Popup('Input lower and upper range limit')
+                elif not max_wavelengths or region_limits:
+                    sg.Popup('Input maximum wavelength and/or lower and upper range limit')
                 else:
                     sg.Popup('Error detected - please refer to operating manual')
 

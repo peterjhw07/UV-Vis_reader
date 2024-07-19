@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(
-    ['C:\\Users\\Peter\\Documents\\PycharmProjects\\UV-Vis_reader\\UV-Vis_reader_GUI.pyw'],
+    ['UV-Vis_reader_GUI.pyw'],
     pathex=[],
     binaries=[],
     datas=[],
